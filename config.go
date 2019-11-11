@@ -15,10 +15,6 @@ const (
 	defaultEnvPrefix = "GOTOOLKIT"
 )
 
-type Configer interface {
-	Parse()
-}
-
 func Setup(opts ...Option) error {
 
 	options := options{
