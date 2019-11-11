@@ -5,8 +5,7 @@ import (
 )
 
 const (
-	defaultFileName  = "config.json"
-	defaultPath      = "./"
+	defaultPath      = "./config"
 	defaultEnvPrefix = "GOTOOLKIT_"
 )
 
@@ -15,9 +14,8 @@ type Configer interface {
 }
 
 func Setup(opts ...Option) error {
-	viper.SetDefault("config", "")
+
 	options := options{
-		name:      defaultFileName,
 		path:      defaultPath,
 		envPrefix: defaultEnvPrefix,
 	}
@@ -25,7 +23,10 @@ func Setup(opts ...Option) error {
 	for _, o := range opts {
 		o.apply(&options)
 	}
-	viper.SetConfigFile(options.name)
+	if len(options.name) > 0 {
+		viper.SetConfigFile(options.name)
+	}
+
 	viper.AddConfigPath(options.path)
 	viper.SetEnvPrefix(options.envPrefix)
 
