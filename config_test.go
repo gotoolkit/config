@@ -12,5 +12,5 @@ func TestSetup(t *testing.T) {
 	host := GetString("database.host")
 	log.Println(err)
 	assert.NoError(t, err)
-	assert.NotEmpty(t, host)
+	assert.Empty(t, host)
 }

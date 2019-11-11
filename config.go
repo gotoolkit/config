@@ -13,16 +13,14 @@ var (
 )
 
 const (
-	defaultName      = "config.json"
-	defaultPath      = "./config"
+	defaultFile      = "./config/config.yml"
 	defaultEnvPrefix = "GOTOOLKIT"
 )
 
 func Setup(opts ...Option) error {
 
 	options := options{
-		name:      defaultName,
-		path:      defaultPath,
+		file:      defaultFile,
 		envPrefix: defaultEnvPrefix,
 		replacer:  defaultStringReplacer,
 	}
@@ -35,9 +33,8 @@ func Setup(opts ...Option) error {
 	for _, o := range opts {
 		o.apply(&options)
 	}
-	path := filepath.Join(options.path, options.name)
-	// viper.AddConfigPath(options.path)
-	viper.SetConfigFile(path)
+
+	viper.SetConfigFile(options.file)
 
 	if options.autoEnv {
 		viper.SetEnvPrefix(options.envPrefix)
@@ -61,22 +58,18 @@ func Setup(opts ...Option) error {
 }
 
 func createDefaultConfigFile() error {
-	path := filepath.Join(defaultPath, defaultName)
-	log.Println(path)
-	dir, _ := filepath.Split(path)
+	dir, _ := filepath.Split(defaultFile)
 	log.Println(dir)
 	if err := os.MkdirAll(dir, 0750); err != nil {
 		return err
 	}
 
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile(defaultFile, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
+
 	defer f.Close()
-	_, err = f.Write([]byte("{}"))
-	if err != nil {
-		return err
-	}
+
 	return nil
 }

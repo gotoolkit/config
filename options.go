@@ -5,8 +5,7 @@ import (
 )
 
 type options struct {
-	name          string
-	path          string
+	file          string
 	envPrefix     string
 	defaultValues map[string]interface{}
 	flags         *pflag.FlagSet
@@ -26,21 +25,9 @@ func (f optionFunc) apply(o *options) {
 	f(o)
 }
 
-func WithFile() Option {
+func WithFile(file string) Option {
 	return optionFunc(func(o *options) {
-		o.enableFile = true
-	})
-}
-
-func WithFileName(name string) Option {
-	return optionFunc(func(o *options) {
-		o.name = name
-	})
-}
-
-func WithPath(path string) Option {
-	return optionFunc(func(o *options) {
-		o.path = path
+		o.file = file
 	})
 }
 
