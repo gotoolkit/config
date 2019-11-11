@@ -4,7 +4,7 @@
 ## Install
 
 ```console
-go get -u github.com/spf13/viper
+go get -u github.com/gotoolkit/config
 ```
 
 ## Example
