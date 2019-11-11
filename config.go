@@ -6,6 +6,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+var (
+	defaultStringReplacer = strings.NewReplacer(".", "_")
+)
+
 const (
 	defaultPath      = "./config"
 	defaultEnvPrefix = "GOTOOLKIT"
@@ -18,8 +22,9 @@ type Configer interface {
 func Setup(opts ...Option) error {
 
 	options := options{
-		path:      defaultPath,
-		envPrefix: defaultEnvPrefix,
+		path:           defaultPath,
+		envPrefix:      defaultEnvPrefix,
+		stringReplacer: defaultStringReplacer,
 	}
 
 	for _, o := range opts {
@@ -31,9 +36,11 @@ func Setup(opts ...Option) error {
 
 	viper.AddConfigPath(options.path)
 
-	viper.SetEnvPrefix(options.envPrefix)
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-	viper.AutomaticEnv()
+	if options.autoEnv {
+		viper.SetEnvPrefix(options.envPrefix)
+		viper.SetEnvKeyReplacer(options.stringReplacer)
+		viper.AutomaticEnv()
+	}
 
 	for k, v := range options.defaultValues {
 		viper.SetDefault(k, v)
