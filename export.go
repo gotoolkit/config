@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func yamlStringSettings() (string, error) {
+func YamlStringSettings() (string, error) {
 	c := viper.AllSettings()
 	bs, err := yaml.Marshal(c)
 	if err != nil {

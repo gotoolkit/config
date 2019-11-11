@@ -35,5 +35,9 @@ func Setup(opts ...Option) error {
 
 	viper.BindPFlags(options.flags)
 
+	if options.watch {
+		viper.WatchConfig()
+	}
+
 	return viper.ReadInConfig()
 }

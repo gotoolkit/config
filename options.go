@@ -10,6 +10,7 @@ type options struct {
 	envPrefix     string
 	defaultValues map[string]interface{}
 	flags         *pflag.FlagSet
+	watch         bool
 }
 
 type Option interface {
@@ -49,5 +50,11 @@ func WithPFlags(flags *pflag.FlagSet) Option {
 func WithDefault(defaultValues map[string]interface{}) Option {
 	return optionFunc(func(o *options) {
 		o.defaultValues = defaultValues
+	})
+}
+
+func WithWatchEnable(enable bool) Option {
+	return optionFunc(func(o *options) {
+		o.watch = enable
 	})
 }
