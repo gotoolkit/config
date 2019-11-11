@@ -33,7 +33,9 @@ func Setup(opts ...Option) error {
 		viper.SetDefault(k, v)
 	}
 
-	viper.BindPFlags(options.flags)
+	if options.flags != nil {
+		viper.BindPFlags(options.flags)
+	}
 
 	if options.watch {
 		viper.WatchConfig()
