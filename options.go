@@ -12,6 +12,7 @@ type options struct {
 	flags         *pflag.FlagSet
 	watch         bool
 	autoEnv       bool
+	enableFile    bool
 	replacer      *Replacer
 }
 
@@ -23,6 +24,12 @@ type optionFunc func(*options)
 
 func (f optionFunc) apply(o *options) {
 	f(o)
+}
+
+func WithFile() Option {
+	return optionFunc(func(o *options) {
+		o.enableFile = true
+	})
 }
 
 func WithFileName(name string) Option {
