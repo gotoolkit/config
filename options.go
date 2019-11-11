@@ -1,20 +1,18 @@
 package config
 
 import (
-	"strings"
-
 	"github.com/spf13/pflag"
 )
 
 type options struct {
-	name           string
-	path           string
-	envPrefix      string
-	defaultValues  map[string]interface{}
-	flags          *pflag.FlagSet
-	watch          bool
-	autoEnv        bool
-	stringReplacer *strings.Replacer
+	name          string
+	path          string
+	envPrefix     string
+	defaultValues map[string]interface{}
+	flags         *pflag.FlagSet
+	watch         bool
+	autoEnv       bool
+	replacer      *Replacer
 }
 
 type Option interface {
@@ -69,8 +67,8 @@ func WithAutoEnv(enable bool) Option {
 	})
 }
 
-func WithStringReplacer(replacer *strings.Replacer) Option {
+func WithStringReplacer(replacer *Replacer) Option {
 	return optionFunc(func(o *options) {
-		o.stringReplacer = replacer
+		o.replacer = replacer
 	})
 }

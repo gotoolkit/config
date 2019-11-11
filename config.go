@@ -1,13 +1,11 @@
 package config
 
 import (
-	"strings"
-
 	"github.com/spf13/viper"
 )
 
 var (
-	defaultStringReplacer = strings.NewReplacer(".", "_")
+	defaultStringReplacer = NewReplacer(".", "_")
 )
 
 const (
@@ -18,9 +16,9 @@ const (
 func Setup(opts ...Option) error {
 
 	options := options{
-		path:           defaultPath,
-		envPrefix:      defaultEnvPrefix,
-		stringReplacer: defaultStringReplacer,
+		path:      defaultPath,
+		envPrefix: defaultEnvPrefix,
+		replacer:  defaultStringReplacer,
 	}
 
 	for _, o := range opts {
@@ -34,7 +32,7 @@ func Setup(opts ...Option) error {
 
 	if options.autoEnv {
 		viper.SetEnvPrefix(options.envPrefix)
-		viper.SetEnvKeyReplacer(options.stringReplacer)
+		viper.SetEnvKeyReplacer(options.replacer.Replacer)
 		viper.AutomaticEnv()
 	}
 
