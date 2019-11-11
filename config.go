@@ -1,12 +1,14 @@
 package config
 
 import (
+	"strings"
+
 	"github.com/spf13/viper"
 )
 
 const (
 	defaultPath      = "./config"
-	defaultEnvPrefix = "GOTOOLKIT_"
+	defaultEnvPrefix = "GOTOOLKIT"
 )
 
 type Configer interface {
@@ -28,7 +30,10 @@ func Setup(opts ...Option) error {
 	}
 
 	viper.AddConfigPath(options.path)
+
 	viper.SetEnvPrefix(options.envPrefix)
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
 
 	for k, v := range options.defaultValues {
 		viper.SetDefault(k, v)
