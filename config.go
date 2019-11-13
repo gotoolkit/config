@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 
@@ -59,7 +58,6 @@ func Setup(opts ...Option) error {
 
 func createDefaultConfigFile() error {
 	dir, _ := filepath.Split(defaultFile)
-	log.Println(dir)
 	if err := os.MkdirAll(dir, 0750); err != nil {
 		return err
 	}
