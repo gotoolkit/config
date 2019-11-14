@@ -12,7 +12,7 @@ var (
 )
 
 const (
-	defaultFile      = "./config/config.yml"
+	defaultFile      = "./.env"
 	defaultEnvPrefix = "GOTOOLKIT"
 )
 
@@ -34,7 +34,6 @@ func Setup(opts ...Option) error {
 	}
 
 	viper.SetConfigFile(options.file)
-
 	if options.autoEnv {
 		viper.SetEnvPrefix(options.envPrefix)
 		viper.SetEnvKeyReplacer(options.replacer.Replacer)
