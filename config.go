@@ -18,50 +18,50 @@ const (
 
 func Setup(opts ...Option) error {
 
-	options := options{
+	opt := options{
 		file:      defaultFile,
 		envPrefix: defaultEnvPrefix,
 		replacer:  defaultStringReplacer,
 	}
 
-	err := createDefaultConfigFile()
+	for _, o := range opts {
+		o.apply(&opt)
+	}
+
+	err := createDefaultConfigFile(opt.file)
 	if err != nil {
 		return err
 	}
 
-	for _, o := range opts {
-		o.apply(&options)
-	}
-
-	viper.SetConfigFile(options.file)
-	if options.autoEnv {
-		viper.SetEnvPrefix(options.envPrefix)
-		viper.SetEnvKeyReplacer(options.replacer.Replacer)
+	viper.SetConfigFile(opt.file)
+	if opt.autoEnv {
+		viper.SetEnvPrefix(opt.envPrefix)
+		viper.SetEnvKeyReplacer(opt.replacer.Replacer)
 		viper.AutomaticEnv()
 	}
 
-	for k, v := range options.defaultValues {
+	for k, v := range opt.defaultValues {
 		viper.SetDefault(k, v)
 	}
 
-	if options.flags != nil {
-		viper.BindPFlags(options.flags)
+	if opt.flags != nil {
+		viper.BindPFlags(opt.flags)
 	}
 
-	if options.watch {
+	if opt.watch {
 		viper.WatchConfig()
 	}
 
 	return viper.ReadInConfig()
 }
 
-func createDefaultConfigFile() error {
-	dir, _ := filepath.Split(defaultFile)
+func createDefaultConfigFile(path string) error {
+	dir, _ := filepath.Split(path)
 	if err := os.MkdirAll(dir, 0750); err != nil {
 		return err
 	}
 
-	f, err := os.OpenFile(defaultFile, os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
