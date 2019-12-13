@@ -1,5 +1,15 @@
 package config
 
+type ConfigType string
+
+const (
+	YAML       ConfigType = "yaml"
+	JSON                  = "json"
+	HCL                   = "hcl"
+	ENV                   = "env"
+	PROPERTIES            = "properties"
+)
+
 type Configurator interface {
 	Get(key string) interface{}
 	GetInt(key string) int

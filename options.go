@@ -1,10 +1,15 @@
 package config
 
 import (
+	"io"
+	"strings"
+
 	"github.com/spf13/pflag"
 )
 
 type options struct {
+	configType    ConfigType
+	reader        io.Reader
 	file          string
 	envPrefix     string
 	defaultValues map[string]interface{}
@@ -12,7 +17,7 @@ type options struct {
 	watch         bool
 	autoEnv       bool
 	enableFile    bool
-	replacer      *Replacer
+	replacer      *strings.Replacer
 }
 
 type Option interface {
@@ -34,6 +39,7 @@ func WithFile(file string) Option {
 func WithEnv(prefix string) Option {
 	return optionFunc(func(o *options) {
 		o.envPrefix = prefix
+		o.autoEnv = true
 	})
 }
 
@@ -55,14 +61,15 @@ func WithWatchEnable(enable bool) Option {
 	})
 }
 
-func WithAutoEnv(enable bool) Option {
+func WithStringReplacer(replacer *strings.Replacer) Option {
 	return optionFunc(func(o *options) {
-		o.autoEnv = enable
+		o.replacer = replacer
 	})
 }
 
-func WithStringReplacer(replacer *Replacer) Option {
+func WithReader(reader io.Reader, configType ConfigType) Option {
 	return optionFunc(func(o *options) {
-		o.replacer = replacer
+		o.reader = reader
+		o.configType = configType
 	})
 }
