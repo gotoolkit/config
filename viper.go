@@ -33,19 +33,20 @@ func New(opts ...Option) (*viper.Viper, error) {
 		vp.BindPFlags(opt.flags)
 	}
 
-	if opt.watch {
-		vp.WatchConfig()
-	}
-
 	if len(opt.file) > 0 {
 		err = createDefaultConfigFile(opt.file)
 		if err != nil {
 			return nil, err
 		}
 		vp.SetConfigFile(opt.file)
+
+		if opt.watch {
+			vp.WatchConfig()
+		}
 		err = vp.ReadInConfig()
 		return vp, err
 	}
+
 	vp.SetConfigType(string(opt.configType))
 	err = vp.ReadConfig(opt.reader)
 	return vp, err

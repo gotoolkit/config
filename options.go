@@ -55,9 +55,9 @@ func WithDefault(defaultValues map[string]interface{}) Option {
 	})
 }
 
-func WithWatchEnable(enable bool) Option {
+func WithEnableWatch() Option {
 	return optionFunc(func(o *options) {
-		o.watch = enable
+		o.watch = true
 	})
 }
 
