@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	c, err := config.New(config.WithFile("./test.yaml"), config.WithWatchEnable(true))
+	c, err := config.New()
 	if err != nil {
 		log.Fatalln(err)
 	}
