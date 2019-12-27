@@ -61,8 +61,10 @@ func New(opts ...Option) (*Config, error) {
 
 func createDefaultConfigFile(path string) error {
 	dir, _ := filepath.Split(path)
-	if err := os.MkdirAll(dir, 0750); err != nil {
-		return err
+	if len(dir) > 0 {
+		if err := os.MkdirAll(dir, 0750); err != nil {
+			return err
+		}
 	}
 
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)

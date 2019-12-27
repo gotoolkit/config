@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	c, err := config.New()
+	c, err := config.New(config.WithFile(".env"))
 	if err != nil {
 		log.Fatalln(err)
 	}
